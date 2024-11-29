@@ -20,6 +20,12 @@ int xsoma = 0, ysoma = 0; // Acumuladores para movimento do mouse
 
 time_t last_move_time;  // Tempo do último movimento registrado
 
+// Variáveis globais
+static pthread_t thread_id;   // ID da thread
+static int fd_mouse = -1;     // Descritor do dispositivo do mouse
+static int xsoma = 0, ysoma = 0;  // Acumuladores para movimento do mouse
+static time_t last_move_time;     // Tempo do último movimento registrado
+
 // Função para abrir o dispositivo físico
 static int open_physical(int fd) {
     if (fd == -1) {
@@ -29,6 +35,33 @@ static int open_physical(int fd) {
         }
     }
     return fd;
+}
+
+// Inicializa a leitura do mouse
+int init_mouse_reader(void) {
+    // Inicializar mutex
+    if (pthread_mutex_init(&lock, NULL) != 0) {
+        fprintf(stderr, "Error initializing mutex\n");
+        return -1;
+    }
+
+    // Abrir dispositivo do mouse
+    fd_mouse = open("/dev/input/mice", O_RDONLY);
+    if (fd_mouse == -1) {
+        perror("Error opening /dev/input/mice");
+        return -1;
+    }
+
+    // Obter o tempo inicial
+    last_move_time = time(NULL);
+
+    // Criar a thread
+    if (pthread_create(&thread_id, NULL, read_mouse, NULL) != 0) {
+        perror("Error creating thread");
+        close(fd_mouse);
+        return -1;
+    }
+    return 0;
 }
 
 // Função para mapear memória física
@@ -45,9 +78,9 @@ static void* map_physical(int fd, unsigned int base, unsigned int span) {
     return virtual_base;
 }
 
-// Thread para leitura do mouse
+// Função de leitura contínua do mouse
 void* read_mouse(void* arg) {
-    unsigned char buf[3]; // Buffer para o pacote de 3 bytes
+    unsigned char buf[3];
     int x, y;
 
     while (1) {
@@ -60,11 +93,9 @@ void* read_mouse(void* arg) {
             continue;
         }
 
-        // Capturar movimento em X e Y
         x = (signed char)buf[1];
         y = (signed char)buf[2];
 
-        // Aplicar limiar para ignorar valores muito pequenos
         if (abs(x) >= MOVEMENT_THRESHOLD || abs(y) >= MOVEMENT_THRESHOLD) {
             pthread_mutex_lock(&lock);
             xsoma += x;
@@ -73,10 +104,40 @@ void* read_mouse(void* arg) {
             pthread_mutex_unlock(&lock);
         }
     }
-
     return NULL;
 }
-/*
+
+// Verifica o movimento atual e retorna a direção
+const char* get_mouse_direction(void) {
+    const char* direction = "No Movement";
+
+    pthread_mutex_lock(&lock);
+
+    if (difftime(time(NULL), last_move_time) >= INACTIVITY_TIMEOUT) {
+        xsoma = 0;
+        ysoma = 0;
+    }
+
+    if (xsoma > 0) direction = "Right";
+    else if (xsoma < 0) direction = "Left";
+    else if (ysoma > 0) direction = "Up";
+    else if (ysoma < 0) direction = "Down";
+
+    xsoma = 0;
+    ysoma = 0;
+
+    pthread_mutex_unlock(&lock);
+
+    return direction;
+}
+
+// Finaliza a leitura do mouse
+void close_mouse_reader(void) {
+    pthread_cancel(thread_id);  // Cancela a thread
+    pthread_join(thread_id, NULL);
+    close(fd_mouse);
+    pthread_mutex_destroy(&lock);
+}
 
 int main() {
     pthread_t thread_id;
@@ -130,4 +191,3 @@ int main() {
 
     return EXIT_SUCCESS;
 }
-*/
