@@ -14,7 +14,7 @@ O objetivo do Pac-Man é coletar três maçãs para vencer o Fantasma. Já o Fan
 
 ---
 
-![Pause](gif_testes/jogo.gif)
+![img](midias/imagem1.jpg)
 
 ---
 
@@ -244,13 +244,15 @@ A memória dos **sprites** dos personagens e itens é alocada dinamicamente para
 Alguns gif's abaixo descreve os testes feito durante o desenvolvimento.
 
 ### Interação com elementos
-
-### Pause
-![Pause](gif_testes/pause.gif)
+![Pac](midias/video1.gif)
 ---
 ### Reinício
-![Reinício](gif_testes/rotacao.gif)
+![Reinício](midias/video2.gif)
 ---
+### Maçã Envenenada 
+![maca](midias/video3.gif)
+---
+
 <div id="makefile"></div> 
 
 ## **Como executar o Jogo**
