@@ -97,7 +97,7 @@ O Assembly é uma linguagem de programação de baixo nível que está intimamen
 
 O kit de desenvolvimento DE1-SoC é uma plataforma de prototipagem projetada para o desenvolvimento de sistemas embarcados e aplicações em FPGA (Field-Programmable Gate Array). Este kit é equipado com um FPGA da Altera (atualmente Intel), que permite a implementação de circuitos digitais personalizados. Abaixo tem os componentes principais dessa placa.
 
-![alt text](image.png)
+![alt text](Midias/image.png)
 
 ---
 <div id="acl345"></div>
@@ -260,7 +260,7 @@ Alguns gif's abaixo descreve os testes feito durante o desenvolvimento.
 ### Makefile
 Este Makefile fornece uma maneira simples e eficaz de compilar e executar seu projeto de Tetris, garantindo que as dependências necessárias sejam incluídas e que o ambiente esteja limpo antes da execução. A utilização de sudo indica que a aplicação pode interagir diretamente com o hardware, o que é comum em projetos que envolvem FPGAs e sistemas embarcados.
 
-![Makefile](imagens/makefile.png)
+![Makefile](Midias/image2.png)
 
 1. all:<br>
 Este é o alvo padrão do Makefile. Quando você executa make sem especificar um alvo, o Makefile executa o alvo all. Neste caso, não há dependências definidas, então ele sempre executará as instruções subsequentes.
