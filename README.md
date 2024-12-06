@@ -14,7 +14,7 @@ O objetivo do Pac-Man é coletar três maçãs para vencer o Fantasma. Já o Fan
 
 ---
 
-![img](Midias/imagem1.jpg)
+![img](Midias/Imagem1.jpg)
 
 ---
 
@@ -246,7 +246,7 @@ Alguns gif's abaixo descreve os testes feito durante o desenvolvimento.
 ### Interação com elementos
 ![Pac](Midias/video1.gif)
 ---
-### Reinício
+### Pause e Reinício
 ![Reinício](Midias/video2.gif)
 ---
 ### Maçã Envenenada 
