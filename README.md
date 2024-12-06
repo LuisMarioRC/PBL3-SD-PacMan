@@ -341,4 +341,4 @@ Este projeto foi desenvolvido na disciplina TEC499 - MI de Sistemas Digitais (Se
 
 ---
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=9932CC&height=175&section=footer"/>
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=f5d442&height=175&section=footer"/>
